@@ -1,4 +1,6 @@
-const socket = io("http://localhost:3000/chat");
+const socket = io("/", {
+  path: "/chat"
+});
 
 // Events Constants
 const Events = {
@@ -16,9 +18,9 @@ const statusText = document.getElementById("status-text");
 
 // Format timestamp
 function formatTime(date) {
-  return date.toLocaleTimeString("es-ES", { 
-    hour: "2-digit", 
-    minute: "2-digit" 
+  return date.toLocaleTimeString("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit"
   });
 }
 
@@ -32,7 +34,7 @@ function appendMessage(data, skipScroll = false) {
 
   const messageDiv = document.createElement("div");
   messageDiv.className = "flex flex-col";
-  
+
   messageDiv.innerHTML = `
     <div class="bg-gray-600 rounded-lg px-4 py-3 max-w-[80%]">
       <div class="text-xs text-gray-400 mb-1">${data.ip}</div>
@@ -49,7 +51,7 @@ function appendMessage(data, skipScroll = false) {
 function appendError(message) {
   const errorDiv = document.createElement("div");
   errorDiv.className = "flex justify-center";
-  
+
   errorDiv.innerHTML = `
     <div class="bg-red-900/50 text-red-300 text-sm px-4 py-2 rounded-lg border border-red-700">
       ⚠️ ${escapeHtml(message)}
@@ -107,7 +109,7 @@ socket.on(Events.NEW_MESSAGE, (data) => {
 socket.on(Events.CHAT_STATE, (data) => {
   console.log("Chat state:", data);
   updateChatStats(data);
-  
+
   // Load initial messages on first connection
   if (data.initialMessages?.length) {
     data.initialMessages.forEach(msg => appendMessage(msg, true));
@@ -124,11 +126,11 @@ socket.on("exception", (error) => {
 // Form submit handler
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  
+
   const message = messageInput.value.trim();
-  
+
   if (!message) return;
-  
+
   socket.emit(Events.ADD_MESSAGE, { message }, (response) => {
     console.log("Server response:", response);
     if (response?.isSuccess) {
@@ -142,7 +144,7 @@ messageForm.addEventListener("submit", (e) => {
 function updateChatStats(data) {
   const totalMessagesEl = document.getElementById("total-messages");
   const totalUsersEl = document.getElementById("total-users");
-  
+
   if (data.totalMessages !== undefined && totalMessagesEl) {
     totalMessagesEl.textContent = data.totalMessages;
   }
