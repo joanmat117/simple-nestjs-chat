@@ -1,6 +1,4 @@
-const socket = io("/", {
-  path: "/chat"
-});
+const socket = io("/chat");
 
 // Events Constants
 const Events = {
