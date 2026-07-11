@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body class="bg-gray-900 h-[100dvh] flex items-center justify-center p-2 sm:p-4">
+  
+  <div class="w-full max-w-2xl h-full sm:h-[600px] bg-gray-800 rounded-none sm:rounded-xl shadow-2xl flex flex-col overflow-hidden">
+    
+    <!-- Header -->
+    <div class="bg-gray-700 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <h1 class="text-lg sm:text-xl font-bold text-white">💬 Chat</h1>
+        <span id="status" class="flex items-center gap-1.5 text-xs sm:text-sm text-gray-400">
+          <span id="status-dot" class="w-2 h-2 rounded-full bg-red-500"></span>
+          <span id="status-text">Desconectado</span>
+        </span>
+      </div>
+      <span id="chat-stats" class="text-[10px] sm:text-xs text-gray-500">
+          <span id="total-messages">0</span> msgs · <span id="total-users">0</span> online
+        </span>
+    </div>
+
+    <!-- Messages Area -->
+    <div id="messages" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
+      <!-- Messages will be rendered here -->
+      <div class="text-center text-gray-500 text-sm py-8">
+        No hay mensajes aún. ¡Empieza la conversación!
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="bg-gray-700 p-3 sm:p-4">
+      <form id="message-form" class="flex gap-2 sm:gap-3">
+        <input 
+          type="text" 
+          id="message-input"
+          placeholder="Escribe un mensaje..." 
+          class="flex-1 bg-gray-600 text-white placeholder-gray-400 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          autocomplete="off"
+        >
+        <button 
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg transition flex items-center gap-1 sm:gap-2"
+        >
+          <span class="hidden sm:inline">Enviar</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
+        </button>
+      </form>
+    </div>
+    
+  </div>
+
+  <script src="./main.js"></script>
+</body>
+</html>
