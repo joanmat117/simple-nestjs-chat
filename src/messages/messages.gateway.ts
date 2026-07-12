@@ -12,7 +12,7 @@ import { MessagesWsResponses } from "./types/responses.type";
 
 
 @WebSocketGateway({
-  namespace: "chat"
+  namespace: "chat",
 })
 @UsePipes(new ZodValidationPipe())
 @UseFilters(new WsExceptionFilter())
@@ -42,10 +42,14 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
       const date = new Date()
 
+      this.logger.debug(client.handshake.headers)
+
       this.messagesService.saveMessage({
         message: data.message,
         date,
-        ip: client.handshake.address
+        ip: client.handshake.headers["true-client-ip"]?.toString()
+          || client.handshake.headers["x-forwarded-for"]?.toString()
+          || client.handshake.address
       })
 
       const newMessage: MessagesWsResponses[MessagesWsEvents.NEW_MESSAGE] = {
