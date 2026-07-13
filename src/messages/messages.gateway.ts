@@ -9,7 +9,7 @@ import { WsExceptionFilter } from "./ws-exception.filter";
 import { MessagesService } from "./messages.service";
 import { MessagesWsEvents } from "./constants/events.enum";
 import { MessagesWsResponses } from "./types/responses.type";
-
+import { adjectives, animals, colors, uniqueNamesGenerator } from "unique-names-generator"
 
 @WebSocketGateway({
   namespace: "chat",
@@ -44,17 +44,29 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
       this.logger.debug(client.handshake.headers)
 
+      const userAgent = client.handshake.headers['user-agent'] || 'unknown';
+      const language = client.handshake.headers['accept-language'] || 'unknown';
+      const platform = client.handshake.headers['sec-ch-ua-platform'] || '';
+      const seed = `${userAgent}-${language}-${platform}`;
+
+      const name = uniqueNamesGenerator({
+        seed,
+        dictionaries: [
+          colors,
+          adjectives,
+          animals
+        ]
+      })
+
       this.messagesService.saveMessage({
         message: data.message,
         date,
-        ip: client.handshake.headers["true-client-ip"]?.toString()
-          || client.handshake.headers["x-forwarded-for"]?.toString()
-          || client.handshake.address
+        ip: name
       })
 
       const newMessage: MessagesWsResponses[MessagesWsEvents.NEW_MESSAGE] = {
         date,
-        ip: client.handshake.address,
+        ip: name,
         message: data.message
       }
 

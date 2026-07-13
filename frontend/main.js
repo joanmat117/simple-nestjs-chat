@@ -34,10 +34,10 @@ function appendMessage(data, skipScroll = false) {
   messageDiv.className = "flex flex-col";
 
   messageDiv.innerHTML = `
-    <div class="bg-gray-600 rounded-lg px-4 py-3 max-w-[80%]">
-      <div class="text-xs text-gray-400 mb-1">${data.ip}</div>
-      <div class="text-white">${escapeHtml(data.message)}</div>
-      <div class="text-xs text-gray-500 mt-1 text-right">${formatTime(new Date(data.date))}</div>
+    <div class="max-w-[85%]">
+      <div class="text-[11px] font-medium text-[#00e5ff] tracking-wide mb-1">${data.ip}</div>
+      <div class="text-[#eee] text-sm leading-relaxed">${escapeHtml(data.message)}</div>
+      <div class="text-[10px] text-[#444] mt-1 tabular-nums">${formatTime(new Date(data.date))}</div>
     </div>
   `;
 
@@ -51,8 +51,8 @@ function appendError(message) {
   errorDiv.className = "flex justify-center";
 
   errorDiv.innerHTML = `
-    <div class="bg-red-900/50 text-red-300 text-sm px-4 py-2 rounded-lg border border-red-700">
-      ⚠️ ${escapeHtml(message)}
+    <div class="text-[#ff4444] text-xs px-4 py-2">
+      ${escapeHtml(message)}
     </div>
   `;
 
@@ -80,11 +80,11 @@ function scrollToBottom() {
 // Update connection status
 function updateStatus(connected) {
   if (connected) {
-    statusDot.className = "w-2 h-2 rounded-full bg-green-500";
-    statusText.textContent = "Conectado";
+    statusDot.className = "w-1.5 h-1.5 rounded-full bg-[#22c55e]";
+    statusText.textContent = "online";
   } else {
-    statusDot.className = "w-2 h-2 rounded-full bg-red-500";
-    statusText.textContent = "Desconectado";
+    statusDot.className = "w-1.5 h-1.5 rounded-full bg-[#ef4444]";
+    statusText.textContent = "offline";
   }
 }
 
